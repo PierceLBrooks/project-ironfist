@@ -1171,12 +1171,22 @@ static int l_toggleAIArmySharing(lua_State *L) {
   return 0;
 }
 
+static int l_forceAIChase(lua_State *L) {
+	int computerPlayer = (int)luaL_checknumber(L, 1);
+	int computerHero = (int)luaL_checknumber(L, 2);
+	int player = (int)luaL_checknumber(L, 3);
+	int hero = (int)luaL_checknumber(L, 4);
+	gpGame->ForceComputerPlayerHeroChase(computerPlayer, computerHero, player, hero);
+	return 0;
+}
+
 static void register_uncategorized_funcs(lua_State *L) {
   lua_register(L, "PlaySoundEffect", l_playsoundeffect);
   lua_register(L, "GetInclinedToJoin", l_getinclinedtojoin);
   lua_register(L, "SetInclinedToJoin", l_setinclinedtojoin);
   lua_register(L, "StartBattle", l_startbattle);
   lua_register(L, "ToggleAIArmySharing", l_toggleAIArmySharing);
+  lua_register(L, "ForceComputerPlayerHeroChase", l_forceAIChase);
 }
 
 /****************************************************************************************************************/

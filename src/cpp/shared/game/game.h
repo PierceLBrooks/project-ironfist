@@ -6,6 +6,7 @@
 #include "artifacts.h"
 #include "town/town.h"
 
+#define AI_VALUE_CAP 32000
 #define NUM_PLAYERS 6
 #define MAX_HEROES 54
 #define MAX_TOWNS 72
@@ -165,6 +166,7 @@ public:
 	char field_660E;
 
   // New state
+  int computerPlayerHeroForcedChase[NUM_PLAYERS][MAX_HEROES][NUM_PLAYERS];
   bool sharePlayerVision[NUM_PLAYERS][NUM_PLAYERS];
 	// AI redistribute troops toggle
 	bool allowAIArmySharing = true;
@@ -205,6 +207,7 @@ public:
   void PerMonth_orig();
 
   void ResetIronfistGameState();
+  void ForceComputerPlayerHeroChase(int computerPlayer, int computerHero, int player, int hero);
   void ShareVision(int sourcePlayer, int destPlayer);
   void CancelShareVision(int sourcePlayer, int destPlayer);
 	

@@ -220,6 +220,11 @@ void game::ResetIronfistGameState() {
         for (int j = 0; j < NUM_PLAYERS; j++) {
             this->sharePlayerVision[i][j] = false;
         }
+		for (int j = 0; j < MAX_HEROES; j++) {
+			for (int k = 0; k < NUM_PLAYERS; k++) {
+				this->computerPlayerHeroForcedChase[i][j][k] = -1;
+			}
+		}
     }
 }
 
@@ -283,12 +288,61 @@ class philAI {
 public:
 	void RedistributeTroops_orig(armyGroup *, armyGroup *, int, int, int, int, int);
 	void RedistributeTroops(armyGroup *army1, armyGroup *army2, int a1, int a2, int a3, int a4, int a5);
+
+	int ValueOfEventAtPosition_orig(int, int, int, int *);
+	int ValueOfEventAtPosition(int a1, int a2, int a3, int *a4);
 };
 
 void philAI::RedistributeTroops(armyGroup *army1, armyGroup *army2, int a1, int a2, int a3, int a4, int a5) {
 	if (gpGame->allowAIArmySharing) {
 		RedistributeTroops_orig(army1, army2, a1, a2, a3, a4, a5);
 	}
+}
+
+int philAI::ValueOfEventAtPosition(int a1, int a2, int a3, int *a4) {
+	hero *hro;
+
+	hro = 0;
+	if (gpCurPlayer && gpCurPlayer->curHeroIdx != -1)
+		hro = &gpGame->heroes[gpCurPlayer->curHeroIdx];
+
+	if (hro) {
+		int origin = -1;
+		for (int i = 0; i < gpCurPlayer->numHeroes; i++) {
+			if (hro->heroID == gpGame->heroes[gpCurPlayer->heroesOwned[i]].heroID) {
+				origin = i;
+				break;
+			}
+			
+		}
+		if (origin != -1) {
+			int targets[MAX_HEROES];
+			int target;
+			int targetsCnt = 0;
+			for (int i = 0; i < NUM_PLAYERS; i++) {
+				if (gpCurPlayer != &gpGame->players[i]) {
+					target = gpGame->computerPlayerHeroForcedChase[giCurPlayer][origin][i];
+					if (target != -1) {
+						targets[targetsCnt++] = gpGame->players[i].heroesOwned[target];
+					}
+				}
+			}
+			for (int i = 0; i < targetsCnt; i++) {
+				target = targets[i];
+				if (target != -1) {
+					int srcX = hro->x;
+					int srcY = hro->y;
+					int dstX;
+					int dstY;
+					hro = &gpGame->heroes[target];
+					dstX = hro->x;
+					dstY = hro->y;
+				}
+			}
+		}
+	}
+
+	return ValueOfEventAtPosition_orig(a1, a2, a3, a4);
 }
 
 void game::InitRandomArtifacts() {
