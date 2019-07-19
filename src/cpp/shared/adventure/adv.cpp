@@ -277,13 +277,33 @@ int advManager::MapPutResource(int x, int y, int resIdx, int resQty) {
 	//resType == loc->objectIndex >> 1
 	int cellIdx = y * gpGame->map.height + x;
 	mapCell * loc = &gpGame->map.tiles[cellIdx];
-	loc->objectIndex = resIdx;
-	loc->extraInfo = resQty;
-	loc->objTileset = TILESET_OBJECT_RESOURCE;
 	loc->objType = TILE_HAS_EVENT | LOCATION_RESOURCE;
-	loc->overlayIndex = -1;
-	loc->field_4_1 = 0;
-	loc->isShadow = 0;
+	gpGame->ConvertObject(
+		x - 1,
+		y,
+		x - 1,
+		y,
+		46,
+		16,
+		16,
+		46,
+		resIdx << 1,
+		-1,
+		-1);
+	gpGame->ConvertObject(
+		x,
+		y,
+		x,
+		y,
+		46,
+		17,
+		17,
+		46,
+		(resIdx << 1) + 1,
+		-1,
+		-1);
+	loc->extraInfo = ((loc->extraInfo & 7) | (resQty * 8));
+	loc->objectIndex = (resIdx << 1);
 	return 0;
 }
 

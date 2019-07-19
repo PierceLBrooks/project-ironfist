@@ -7,13 +7,45 @@ extern "C" {
 #include "gui/dialog.h"
 #include "scripting/lua_utils.h"
 
-void lua_setconst(lua_State *L, const char* nam, int i) {
+void lua_pusharray_int(lua_State *L, int idx, int i) {
+	lua_pushinteger(L, i);
+	lua_rawseti(L, -2, idx);
+}
+
+void lua_pusharray_nil(lua_State *L, int idx) {
+	lua_pushnil(L);
+	lua_rawseti(L, -2, idx);
+}
+
+void lua_pusharray_str(lua_State *L, int idx, const std::string& str) {
+	lua_pusharray_str(L, idx, str.c_str());
+}
+
+void lua_pusharray_str(lua_State *L, int idx, const char* str) {
+	lua_pushstring(L, str);
+	lua_rawseti(L, -2, idx);
+}
+
+void lua_pusharray(lua_State *L, int idx) {
+
+}
+
+void lua_setconst_int(lua_State *L, const char* nam, int i) {
 	lua_pushinteger(L, i);
 	lua_setglobal(L, nam);
 }
 
 void lua_setconst_nil(lua_State *L, const char* nam) {
 	lua_pushnil(L);
+	lua_setglobal(L, nam);
+}
+
+void lua_setconst_str(lua_State *L, const char* nam, const std::string& str) {
+	lua_setconst_str(L, nam, str.c_str());
+}
+
+void lua_setconst_str(lua_State *L, const char* nam, const char* str) {
+	lua_pushstring(L, str);
 	lua_setglobal(L, nam);
 }
 

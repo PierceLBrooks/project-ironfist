@@ -215,6 +215,7 @@ public:
   void MakeAllWaterVisible(int player);
   void MakeAllWaterVisible_orig(int player);
 
+  void ConvertObject(int x1, int y1, int x2, int y2, int fromObjTileset, int fromObjIndexLow, int fromObjIndexHigh, int toObjTileset, int toObjectIndexLow, int fromObjType, int toObjType);
   void InitRandomArtifacts();
   int GetRandomArtifactId(int allowedLevels, int allowNegatives);
   int LoadMap(char *nam);
