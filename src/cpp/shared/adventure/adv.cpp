@@ -314,6 +314,7 @@ void advManager::QuickInfo(int x, int y) {
   gpWindowManager->AddWindow(&tooltip, 1, -1);
   QuickViewWait();
   gpWindowManager->RemoveWindow(&tooltip);
+}
 
 void advManager::PlayerMonsterInteract(mapCell *cell, mapCell *other, hero *player, int *window, int a1, int a2, int a3, int a4, int a5) {
 	int x;
@@ -354,6 +355,7 @@ bool GetMapCellXY(mapCell* cell, int* x, int* y) {
 	}
 	return false;
 }
+
 // Next two functions are a hack to make heroes draw in front of the flag rather than behind, used because
 // some frames of the Cyborg overlap the flag, and we decided it looks better this way rather than
 // moving the flag/Cyborg
